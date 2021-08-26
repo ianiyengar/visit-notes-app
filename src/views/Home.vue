@@ -24,7 +24,6 @@
       <input type="checkbox" id="-" value="-" v-model="newNote.needswork" />
       <label for="-">- (Needs Work)</label>
       <br />
-
       <br />
       Content:
       <textarea
@@ -43,6 +42,7 @@
       <button class="btn btn-primary" v-on:click="createNote()">Create Note</button>
     </div>
     <br />
+
     <!-- VIEW ALL NOTES  -->
     <h1>All Notes</h1>
     <div v-for="note in notes" v-bind:key="note.id">
