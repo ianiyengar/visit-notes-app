@@ -18,6 +18,16 @@
       </div>
     </header>
 
+    <div id="nav">
+      <router-link to="/">Home</router-link>
+      |
+      <router-link to="/signup">Signup</router-link>
+      |
+      <router-link to="/login">Login</router-link>
+      |
+      <router-link to="/logout">Logout</router-link>
+    </div>
+
     <router-view />
     <!-- Footer-->
     <footer class="footer text-center">

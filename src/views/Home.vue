@@ -4,19 +4,51 @@
     <div>
       Name:
       <input type="text" v-model="newNote.name" />
+
       Date:
       <input type="text" v-model="newNote.date" />
+      <br />
+      <br />
+      <span>Goals addressed: {{ checkedGoals }}</span>
+      <br />
+      <input type="checkbox" id="pronunciations " value="pronunciations " v-model="checkedGoals" />
+      <label for="pronunciations ">Pronunciations</label>
+      <br />
+      <input type="checkbox" id="reach/grasp/manipulation" value="reach/grasp/manipulation" v-model="checkedGoals" />
+      <label for="reach/grasp/manipulation">Reach, Grasp, and Manipulation</label>
+      <br />
+      <input type="checkbox" id="+" value="+" v-model="checkedGoals" />
+      <label for="+">+ (Goal Met)</label>
+      <br />
+      <input type="checkbox" id="-" value="-" v-model="checkedGoals" />
+      <label for="-">- (Needs Work)</label>
+      <br />
+
+      <br />
       Content:
-      <input type="text" v-model="newNote.content" />
-      <button v-on:click="createNote()">Create Note</button>
+      <!-- <input type="text" v-model="newNote.content" /> -->
+      <textarea
+        input
+        type="text"
+        v-model="newNote.content"
+        id="txtComment"
+        placeholder="Enter your note here"
+        class="form-control long-input-field required chars"
+        data-name="Comment"
+        data-maxcharid="chars-counter-comment"
+        maxlength="1000000"
+        rows="10"
+      ></textarea>
+      <br />
+      <button class="btn btn-primary" v-on:click="createNote()">Create Note</button>
     </div>
+    <br />
     <h1>All Notes</h1>
     <div v-for="note in notes" v-bind:key="note.id">
       <h2>{{ note.name }}</h2>
-      <img v-bind:src="note.url" v-bind:alt="note.name" />
       <p>Date: {{ note.date }}</p>
       <p>Content: {{ note.content }}</p>
-      <button v-on:click="showNote(note)">More info</button>
+      <button class="btn btn-primary" v-on:click="showNote(note)">More info</button>
     </div>
     <dialog id="note-details">
       <form method="dialog">
@@ -34,6 +66,7 @@
           <input type="text" v-model="currentNote.content" />
         </p>
         <button v-on:click="updateNote(currentNote)">Update</button>
+        <button v-on:click="destroyNote(currentNote)">Destroy Note</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -99,6 +132,7 @@ export default {
           console.log("notes update error", error.response);
         });
     },
+
     destroyNote: function (note) {
       axios.delete("/notes/" + note.id).then((response) => {
         console.log("notes destroy", response);
