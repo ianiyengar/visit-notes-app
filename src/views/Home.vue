@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <!-- NEW NOTE w/ Name, Date, Check boxes, and Content box to write notes. -->
     <h1>New Note</h1>
     <div>
       Name:
@@ -26,7 +27,6 @@
 
       <br />
       Content:
-      <!-- <input type="text" v-model="newNote.content" /> -->
       <textarea
         input
         type="text"
@@ -43,6 +43,7 @@
       <button class="btn btn-primary" v-on:click="createNote()">Create Note</button>
     </div>
     <br />
+    <!-- VIEW ALL NOTES  -->
     <h1>All Notes</h1>
     <div v-for="note in notes" v-bind:key="note.id">
       <h2>{{ note.name }}</h2>
@@ -52,6 +53,7 @@
       <p>Met Goal: {{ note.metgoal }}</p>
       <p>Needs Work: {{ note.needswork }}</p>
       <p>Content: {{ note.content }}</p>
+      <!-- MORE INFO -->
       <button class="btn btn-primary" v-on:click="showNote(note)">More info</button>
     </div>
     <dialog id="note-details">
@@ -64,6 +66,22 @@
         <p>
           Date:
           <input type="text" v-model="currentNote.date" />
+        </p>
+        <p>
+          Pronunciations:
+          <input type="checkbox" v-model="currentNote.pronunciations" />
+        </p>
+        <p>
+          Reach:
+          <input type="checkbox" v-model="currentNote.reach" />
+        </p>
+        <p>
+          Met Goal:
+          <input type="checkbox" v-model="currentNote.metgoal" />
+        </p>
+        <p>
+          Needs Work:
+          <input type="checkbox" v-model="currentNote.needswork" />
         </p>
         <p>
           Content:
@@ -82,13 +100,14 @@
           />
         </p>
         <button v-on:click="updateNote(currentNote)">Update</button>
+        &nbsp;
         <button v-on:click="destroyNote(currentNote)">Destroy Note</button>
+        &nbsp;
         <button>Close</button>
       </form>
     </dialog>
   </div>
 </template>
-
 <style>
 .home {
   padding: 16px;
@@ -140,12 +159,16 @@ export default {
       this.currentNote = note;
       document.querySelector("#note-details").showModal();
     },
-    // ADD CHECK BOX
+
     updateNote: function (note) {
       var params = {
         name: note.name,
         date: note.date,
         content: note.content,
+        pronunciations: note.pronunciations,
+        reach: note.reach,
+        metgoal: note.metgoal,
+        needswork: note.needswork,
       };
       axios
         .patch("/notes/" + note.id, params)
