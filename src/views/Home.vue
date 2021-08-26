@@ -9,18 +9,18 @@
       <input type="text" v-model="newNote.date" />
       <br />
       <br />
-      <span>Goals addressed: {{ checkedGoals }}</span>
+      <span>Goals addressed:</span>
       <br />
-      <input type="checkbox" id="pronunciations " value="pronunciations " v-model="checkedGoals" />
+      <input type="checkbox" id="pronunciations " value="pronunciations " v-model="newNote.pronunciations" />
       <label for="pronunciations ">Pronunciations</label>
       <br />
-      <input type="checkbox" id="reach/grasp/manipulation" value="reach/grasp/manipulation" v-model="checkedGoals" />
+      <input type="checkbox" id="reach/grasp/manipulation" value="reach/grasp/manipulation" v-model="newNote.reach" />
       <label for="reach/grasp/manipulation">Reach, Grasp, and Manipulation</label>
       <br />
-      <input type="checkbox" id="+" value="+" v-model="checkedGoals" />
+      <input type="checkbox" id="+" value="+" v-model="newNote.metgoal" />
       <label for="+">+ (Goal Met)</label>
       <br />
-      <input type="checkbox" id="-" value="-" v-model="checkedGoals" />
+      <input type="checkbox" id="-" value="-" v-model="newNote.needswork" />
       <label for="-">- (Needs Work)</label>
       <br />
 
@@ -37,7 +37,7 @@
         data-name="Comment"
         data-maxcharid="chars-counter-comment"
         maxlength="1000000"
-        rows="10"
+        rows="4"
       ></textarea>
       <br />
       <button class="btn btn-primary" v-on:click="createNote()">Create Note</button>
@@ -47,6 +47,10 @@
     <div v-for="note in notes" v-bind:key="note.id">
       <h2>{{ note.name }}</h2>
       <p>Date: {{ note.date }}</p>
+      <p>Pronunciations: {{ note.pronunciations }}</p>
+      <p>Reach: {{ note.reach }}</p>
+      <p>Met Goal: {{ note.metgoal }}</p>
+      <p>Needs Work: {{ note.needswork }}</p>
       <p>Content: {{ note.content }}</p>
       <button class="btn btn-primary" v-on:click="showNote(note)">More info</button>
     </div>
@@ -63,7 +67,19 @@
         </p>
         <p>
           Content:
-          <input type="text" v-model="currentNote.content" />
+          <textarea
+            input
+            type="text"
+            v-model="currentNote.content"
+            id="txtComment"
+            placeholder="Enter your note
+          here"
+            class="form-control long-input-field required chars"
+            data-name="Comment"
+            data-maxcharid="chars-counter-comment"
+            maxlength="1000000"
+            rows="2"
+          />
         </p>
         <button v-on:click="updateNote(currentNote)">Update</button>
         <button v-on:click="destroyNote(currentNote)">Destroy Note</button>
@@ -73,7 +89,11 @@
   </div>
 </template>
 
-<style></style>
+<style>
+.home {
+  padding: 16px;
+}
+</style>
 
 <script>
 import axios from "axios";
@@ -100,6 +120,10 @@ export default {
         name: this.newNote.name,
         date: this.newNote.date,
         content: this.newNote.content,
+        pronunciations: this.newNote.pronunciations,
+        reach: this.newNote.reach,
+        metgoal: this.newNote.metgoal,
+        needswork: this.newNote.needswork,
       };
       axios
         .post("/notes", params)
@@ -116,6 +140,7 @@ export default {
       this.currentNote = note;
       document.querySelector("#note-details").showModal();
     },
+    // ADD CHECK BOX
     updateNote: function (note) {
       var params = {
         name: note.name,
